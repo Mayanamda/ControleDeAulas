@@ -1,0 +1,13 @@
+CREATE TABLE Aluno (
+    ID NUMBER(10) PRIMARY KEY,
+    NOME VARCHAR2(255) NOT NULL,
+    MATRICULA VARCHAR2(50) UNIQUE NOT NULL,
+    DATA_NACIMENTO DATE
+);
+-------------------------------------------------
+CREATE TABLE RegistroPresenca (
+    ID NUMBER(10) PRIMARY KEY,
+    ALUNOID NUMBER(10) REFERENCES Aluno(id),
+    DATAAULA DATE,
+    PARTICIPOU CHAR(1) CHECK (participou IN ('S', 'N'))
+);

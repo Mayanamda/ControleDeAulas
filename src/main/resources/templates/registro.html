@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Presença</title>
+</head>
+<body>
+    <h1>Registro de Presença</h1>
+    <form action="/presencas/registrar" method="post" th:object="${registroPresenca}">
+        <label for="alunoId">Aluno:</label>
+        <select id="alunoId" name="alunoId" th:field="*{aluno.id}">
+            <option th:each="aluno : ${alunos}" th:value="${aluno.id}" th:text="${aluno.nome}"></option>
+        </select><br>
+
+        <label for="dataAula">Data da Aula:</label>
+        <input type="date" id="dataAula" name="dataAula" th:field="*{dataAula}" required><br>
+
+        <label for="participou">Participou:</label>
+        <input type="checkbox" id="participou" name="participou" th:field="*{participou}"><br>
+
+        <input type="submit" value="Registrar">
+    </form>
+    <a href="/alunos">Voltar para a lista de alunos</a>
+</body>
+</html>

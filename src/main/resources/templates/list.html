@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Alunos</title>
+</head>
+<body>
+    <h1>Lista de Alunos</h1>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>Matrícula</th>
+            <th>Data de Nascimento</th>
+        </tr>
+        <tr th:each="aluno : ${alunos}">
+            <td th:text="${aluno.nome}"></td>
+            <td th:text="${aluno.matricula}"></td>
+            <td th:text="${#dates.format(aluno.dataNascimento, 'dd/MM/yyyy')}"></td>
+        </tr>
+    </table>
+    <a href="/alunos/cadastrar">Cadastrar Aluno</a>
+</body>
+</html>
