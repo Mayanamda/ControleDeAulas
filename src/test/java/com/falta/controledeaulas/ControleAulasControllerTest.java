@@ -1,6 +1,5 @@
 package com.falta.controledeaulas;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,38 +16,42 @@ public class ControleAulasControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @BeforeEach
-    public void setUp() {
-   
-    }
-
     @Test
     public void testCadastrarAluno() throws Exception {
-        String requestBody = "{\"nome\": \"João\", \"matricula\": \"12345\", \"dataNascimento\": \"1990-01-01\"}";
-        mockMvc.perform(MockMvcRequestBuilders.post("/alunos")
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/controle-aulas/alunos")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
+                .content("{\"nome\":\"João\",\"matricula\":\"12345\",\"dataNascimento\":\"1990-01-01\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     public void testRegistrarPresenca() throws Exception {
-        String requestBody = "{\"alunoId\": 1, \"data\": \"2023-09-28\", \"participou\": true}";
-        mockMvc.perform(MockMvcRequestBuilders.post("/registro-presenca")
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/controle-aulas/registro-presenca")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
+                .content("{\"alunoId\":1,\"participou\":true}"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    public void testListarAlunos() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/alunos"))
+    public void testEncontrarAlunosPorNome() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/controle-aulas/alunos?nome=João"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    public void testListarRegistrosPresenca() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/registro-presenca"))
+    public void testObterRegistrosPorAluno() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/controle-aulas/alunos/1/registros-presenca"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testContarFaltasPorAluno() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/controle-aulas/alunos/1/faltas"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

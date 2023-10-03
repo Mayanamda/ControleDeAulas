@@ -3,6 +3,7 @@ package com.falta.controledeaulas.entity;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +19,7 @@ public class Aluno {
     private Long id;
     private String nome;
     private String matricula;
+    @Column(name = "DATA_NASCIMENTO")
     private Date dataNascimento;
     
     

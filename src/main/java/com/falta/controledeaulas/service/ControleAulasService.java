@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.falta.controledeaulas.entity.Aluno;
+import com.falta.controledeaulas.entity.ConsolidadoPresencaFalta;
 import com.falta.controledeaulas.entity.RegistroPresenca;
 import com.falta.controledeaulas.repository.AlunoRepositoryImpl;
 import com.falta.controledeaulas.repository.RegistroPresencaRepository;
@@ -57,6 +58,30 @@ public class ControleAulasService {
     }
     public List<RegistroPresenca> listarRegistrosPresenca() {
         return registroPresencaRepository.findAll();
+    }
+    
+    public ConsolidadoPresencaFalta calcularConsolidadoPresencaFalta(Long alunoId) {
+        List<RegistroPresenca> registros = registroPresencaRepository.findByAlunoId(alunoId);
+
+        int totalAulas = registros.size();
+        int totalPresencas = 0;
+        int totalFaltas = 0;
+
+        for (RegistroPresenca registro : registros) {
+            if (registro.isParticipou()) {
+                totalPresencas++;
+            } else {
+                totalFaltas++;
+            }
+        }
+
+        ConsolidadoPresencaFalta consolidado = new ConsolidadoPresencaFalta(totalPresencas, totalAulas, alunoId, totalFaltas);
+        consolidado.setAlunoId(alunoId);
+        consolidado.setTotalAulas(totalAulas);
+        consolidado.setPresencas(totalPresencas);
+        consolidado.setFaltas(totalFaltas);
+
+        return consolidado;
     }
 
 }
