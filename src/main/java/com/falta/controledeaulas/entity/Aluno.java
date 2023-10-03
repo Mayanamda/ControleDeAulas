@@ -1,7 +1,7 @@
 package com.falta.controledeaulas.entity;
 
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +18,7 @@ public class Aluno {
     private Long id;
     private String nome;
     private String matricula;
-    private LocalDate dataNascimento;
+    private Date dataNascimento;
     
     
 	public Long getId() {
@@ -39,18 +39,16 @@ public class Aluno {
 	public void setMatricula(String matricula) {
 		this.matricula = matricula;
 	}
-	public LocalDate getDataNascimento() {
+	public Date getDataNascimento() {
 		return dataNascimento;
 	}
-	public void setDataNascimento(LocalDate dataNascimento) {
+	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;	
 	}
-	public Aluno(Long id, String nome, String matricula, LocalDate dataNascimento) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.matricula = matricula;
-		this.dataNascimento = dataNascimento;
+	public Aluno(String nome, String matricula, Date dataNascimento) {
+	    this.nome = nome;
+	    this.matricula = matricula;
+	    this.dataNascimento = dataNascimento;
 	}
 	
 

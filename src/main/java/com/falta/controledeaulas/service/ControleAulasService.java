@@ -9,14 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.falta.controledeaulas.entity.Aluno;
 import com.falta.controledeaulas.entity.RegistroPresenca;
-import com.falta.controledeaulas.repository.AlunoRepository;
+import com.falta.controledeaulas.repository.AlunoRepositoryImpl;
 import com.falta.controledeaulas.repository.RegistroPresencaRepository;
 
 @Service
 public class ControleAulasService {
 
     @Autowired
-    private AlunoRepository alunoRepository;
+    private AlunoRepositoryImpl alunoRepository;
 
     @Autowired
     private RegistroPresencaRepository registroPresencaRepository;
@@ -32,16 +32,10 @@ public class ControleAulasService {
     }
 
     @Transactional
-    public RegistroPresenca registrarPresenca(Long alunoId, boolean participou) {
-        Optional<Aluno> alunoOptional = alunoRepository.findById(alunoId);
-        if (!alunoOptional.isPresent()) {
-            throw new IllegalArgumentException("Aluno não encontrado.");
-        }
-
-        Aluno aluno = alunoOptional.get();
-
-        RegistroPresenca registroPresenca = new RegistroPresenca();
-        registroPresenca.setAluno(aluno);
+    public RegistroPresenca registrarPresenca(Aluno aluno, boolean participou) {
+        
+    	RegistroPresenca registroPresenca = new RegistroPresenca();
+        registroPresenca.setAlunoId(aluno.getId()); 
         registroPresenca.setParticipou(participou);
 
         return registroPresencaRepository.save(registroPresenca);
@@ -58,6 +52,11 @@ public class ControleAulasService {
     public int contarFaltasPorAluno(Long alunoId) {
         return registroPresencaRepository.countFaltasPorAluno(alunoId);
     }
-    
+    public List<Aluno> listarAlunos() {
+        return alunoRepository.findAll();
+    }
+    public List<RegistroPresenca> listarRegistrosPresenca() {
+        return registroPresencaRepository.findAll();
+    }
 
 }

@@ -1,5 +1,11 @@
 package com.falta.controledeaulas;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.falta.controledeaulas.entity.Aluno;
 import com.falta.controledeaulas.entity.RegistroPresenca;
-import com.falta.controledeaulas.repository.AlunoRepository;
-import com.falta.controledeaulas.repository.RegistroPresencaRepository;
 import com.falta.controledeaulas.service.ControleAulasService;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -31,13 +29,6 @@ public class ControleAulasServiceTest {
 
     @Autowired
     private ControleAulasService controleAulasService;
-
-    @Autowired
-    private AlunoRepository alunoRepository;
-
-    @Autowired
-    private RegistroPresencaRepository registroPresencaRepository;
-
     @BeforeEach
     public void setUp() {
     }
@@ -53,9 +44,12 @@ public class ControleAulasServiceTest {
     @Sql("/data.sql") 
     public void testRegistrarPresenca() {
         RegistroPresenca registroPresenca = new RegistroPresenca(1L, parseDate("2023-09-28"), true);
-        RegistroPresenca registroPresencaSalvo = controleAulasService.registrarPresenca(registroPresenca);
+        Aluno aluno = new Aluno("Maria", "Matricula123", new Date());
+        aluno.setId(registroPresenca.getAlunoId());
+        RegistroPresenca registroPresencaSalvo = controleAulasService.registrarPresenca(aluno, registroPresenca.isParticipou());
         assertEquals(registroPresenca.isParticipou(), registroPresencaSalvo.isParticipou());
     }
+
 
     @Test
     public void testListarAlunos() {
