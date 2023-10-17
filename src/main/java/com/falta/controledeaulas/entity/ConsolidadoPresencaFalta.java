@@ -3,11 +3,11 @@ package com.falta.controledeaulas.entity;
 public class ConsolidadoPresencaFalta {
     private int presencas;
     private int faltas;
-    private Long alunoId;
+    private int alunoId;
     private int totalAulas;
 
   
-    public ConsolidadoPresencaFalta(int presencas, int faltas, Long alunoId, int totalAulas) {
+    public ConsolidadoPresencaFalta(int presencas, int faltas, int alunoId, int totalAulas) {
 		super();
 		this.presencas = presencas;
 		this.faltas = faltas;
@@ -31,11 +31,11 @@ public class ConsolidadoPresencaFalta {
         this.faltas = faltas;
     }
 
-	public Long getAlunoId() {
+	public int getAlunoId() {
 		return alunoId;
 	}
 
-	public void setAlunoId(Long alunoId) {
+	public void setAlunoId(int alunoId) {
 		this.alunoId = alunoId;
 	}
 

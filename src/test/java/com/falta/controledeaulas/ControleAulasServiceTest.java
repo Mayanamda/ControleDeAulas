@@ -32,7 +32,7 @@ public class ControleAulasServiceTest {
 
     @Test
     public void testCadastrarAluno() {
-        Aluno aluno = new Aluno("João", "12345", parseDate("1990-01-01"));
+        Aluno aluno = new Aluno(1, "João", "12345", parseDate("1990-01-02"));
         Aluno alunoCadastrado = controleAulasService.cadastrarAluno(aluno);
         assertEquals(aluno.getNome(), alunoCadastrado.getNome());
     }
@@ -40,8 +40,8 @@ public class ControleAulasServiceTest {
     @Test
     @Sql("/data.sql")
     public void testRegistrarPresenca() {
-        RegistroPresenca registroPresenca = new RegistroPresenca(1L, parseDate("2023-09-28"), true);
-        Aluno aluno = new Aluno("Maria", "Matricula123", new Date());
+        RegistroPresenca registroPresenca = new RegistroPresenca(1, parseDate("1991-01-02"), true);
+        Aluno aluno = new Aluno(1, "João", "12345", new Date());
         aluno.setId(registroPresenca.getAlunoId());
         RegistroPresenca registroPresencaSalvo = controleAulasService.registrarPresenca(aluno, registroPresenca.isParticipou());
         assertEquals(registroPresenca.isParticipou(), registroPresencaSalvo.isParticipou());

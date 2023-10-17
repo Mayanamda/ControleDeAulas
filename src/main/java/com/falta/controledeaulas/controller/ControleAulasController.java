@@ -2,6 +2,7 @@ package com.falta.controledeaulas.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,32 +30,50 @@ public class ControleAulasController {
     @Autowired
     private ControleAulasService controleAulasService;
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<RegistroPresenca> registrarPresenca(@RequestBody RegistroPresenca registroPresenca) {
     	RegistroPresenca registroPresencaSalvo = controleAulaRepository.save(registroPresenca);
         return new ResponseEntity<>(registroPresencaSalvo, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<RegistroPresenca>> listarRegistrosPresenca() {
         List<RegistroPresenca> registrosAula = controleAulaRepository.findAll();
         return ResponseEntity.ok(registrosAula);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<RegistroPresenca> obterRegistroPresencaPorId(@PathVariable Long id) {
-        Optional<RegistroPresenca> registroAulaOptional = controleAulaRepository.findById(id);
-        return registroAulaOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/alunos/{alunoId}/registros-presenca")
+    public ResponseEntity<List<RegistroPresenca>> listarPresencasPorAluno(@PathVariable int alunoId) {
+        List<RegistroPresenca> todosOsRegistros = controleAulaRepository.findByAlunoId(alunoId);
+        
+        List<RegistroPresenca> presencas = todosOsRegistros
+                .stream()
+                .filter(registro -> registro.isParticipou())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(presencas);
+    }
+    
+    @GetMapping("/alunos/{alunoId}/faltas")
+    public ResponseEntity<List<RegistroPresenca>> listarFaltasPorAluno(@PathVariable int alunoId) {
+        List<RegistroPresenca> todosOsRegistros = controleAulaRepository.findByAlunoId(alunoId);
+        
+        List<RegistroPresenca> faltas = todosOsRegistros
+                .stream()
+                .filter(registro -> !registro.isParticipou())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(faltas);
     }
     
     @GetMapping("/alunos/{alunoId}/consolidado-presenca-falta")
-    public ResponseEntity<ConsolidadoPresencaFalta> obterConsolidadoPresencaFalta(@PathVariable Long alunoId) {
+    public ResponseEntity<ConsolidadoPresencaFalta> obterConsolidadoPresencaFalta(@PathVariable int alunoId) {
         ConsolidadoPresencaFalta consolidadoDto = controleAulasService.calcularConsolidadoPresencaFalta(alunoId);
         return ResponseEntity.ok(consolidadoDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RegistroPresenca> atualizarRegistroPresenca(@PathVariable Long id, @RequestBody RegistroPresenca novoRegistroAula) {
+    public ResponseEntity<RegistroPresenca> atualizarRegistroPresenca(@PathVariable int id, @RequestBody RegistroPresenca novoRegistroAula) {
         if (!controleAulaRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
@@ -65,7 +84,7 @@ public class ControleAulasController {
 
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirRegistroPresenca(@PathVariable Long id) {
+    public ResponseEntity<Void> excluirRegistroPresenca(@PathVariable int id) {
         if (!controleAulaRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

@@ -8,20 +8,20 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.falta.controledeaulas.entity.RegistroPresenca;
 
-public interface RegistroPresencaRepository extends JpaRepository<RegistroPresenca, Long> {
-	List<RegistroPresenca> findByAlunoId(Long alunoId);
+public interface RegistroPresencaRepository extends JpaRepository<RegistroPresenca, Integer> {
+	List<RegistroPresenca> findByAlunoId(int alunoId);
 
 
 	    @Query("SELECT COUNT(rp) FROM RegistroPresenca rp WHERE rp.alunoId = :alunoId AND rp.participou = true")
-	    int countPresencasPorAluno(Long alunoId);
+	    int countPresencasPorAluno(int alunoId);
 
 	    @Query("SELECT COUNT(rp) FROM RegistroPresenca rp WHERE rp.alunoId = :alunoId AND rp.participou = false")
-	    int countFaltasPorAluno(Long alunoId);
+	    int countFaltasPorAluno(int alunoId);
 
 	    @Query("SELECT rp.data FROM RegistroPresenca rp WHERE rp.alunoId = :alunoId AND rp.participou = false")
-	    List<Date> listarDatasFaltasPorAluno(Long alunoId);
+	    List<Date> listarDatasFaltasPorAluno(int alunoId);
 
 	    @Query("SELECT rp.data FROM RegistroPresenca rp WHERE rp.alunoId = :alunoId AND rp.participou = true")
-	    List<Date> listarDatasPresencasPorAluno(Long alunoId);
+	    List<Date> listarDatasPresencasPorAluno(int alunoId);
 	
 }

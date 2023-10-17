@@ -25,26 +25,26 @@ public class AlunoController {
     @Autowired
     private AlunoRepository alunoRepository;
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<Aluno> cadastrarAluno(@RequestBody Aluno aluno) {
         Aluno alunoCadastrado = alunoRepository.save(aluno);
         return new ResponseEntity<>(alunoCadastrado, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<Aluno>> listarAlunos() {
         List<Aluno> alunos = alunoRepository.findAll();
         return ResponseEntity.ok(alunos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Aluno> obterAlunoPorId(@PathVariable Long id) {
+    public ResponseEntity<Aluno> obterAlunoPorId(@PathVariable int id) {
         Optional<Aluno> alunoOptional = alunoRepository.findById(id);
         return alunoOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Aluno> atualizarAluno(@PathVariable Long id, @RequestBody Aluno novoAluno) {
+    public ResponseEntity<Aluno> atualizarAluno(@PathVariable int id, @RequestBody Aluno novoAluno) {
         if (!alunoRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
@@ -54,7 +54,7 @@ public class AlunoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirAluno(@PathVariable Long id) {
+    public ResponseEntity<Void> excluirAluno(@PathVariable int id) {
         if (!alunoRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

@@ -14,8 +14,8 @@ public class RegistroPresenca {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long alunoId;
+    private int id;
+    private int alunoId;
     private Date data;
     private boolean participou;
 
@@ -23,25 +23,25 @@ public class RegistroPresenca {
     public RegistroPresenca() {
     }
 
-    public RegistroPresenca(Long alunoId, Date data, boolean participou) {
+    public RegistroPresenca(int alunoId, Date data, boolean participou) {
         this.alunoId = alunoId;
         this.data = data;
         this.participou = participou;
     }
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public Long getAlunoId() {
+	public int getAlunoId() {
 		return alunoId;
 	}
 
-	public void setAlunoId(Long alunoId) {
+	public void setAlunoId(int alunoId) {
 		this.alunoId = alunoId;
 	}
 
